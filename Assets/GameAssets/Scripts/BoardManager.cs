@@ -23,7 +23,8 @@ public class BoardManager : MonoBehaviour
 
     private bool IsWithinBoard(int x, int y)
     {
-        return x >= 0 && x < width && y >= 0 && y < height; // Üst sınırı da kontrol et
+        Debug.Log("içerisinde degil");
+        return x >= 0 && x < width && y >= 0; 
     }
 
     private bool IsSquareOccupied(int x, int y, ShapeManager shape)
@@ -155,8 +156,7 @@ public class BoardManager : MonoBehaviour
 
         foreach (Transform child in shape.transform)
         {
-            Vector2 pos = RoundToInt(child.position);
-            if (pos.y >= height) // Tahtanın üst sınırını aştıysa
+            if (child.transform.position.y >= height-1) // Tahtanın üst sınırını aştıysa
             {
                 return true;
             }

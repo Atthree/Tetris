@@ -7,8 +7,9 @@ public class SoundManager : MonoBehaviour
 
     [SerializeField] private AudioClip[] musicClip;
     [SerializeField] private AudioSource musicSource;
-
+    [SerializeField] private AudioSource[] sfx;
     public bool playMusic = true;
+    public bool playSFX = true;
 
     private AudioClip randomMusicClip;
 
@@ -20,6 +21,14 @@ public class SoundManager : MonoBehaviour
     {
         randomMusicClip = RandomClip(musicClip);
         BackgroundMusic(randomMusicClip);
+    }
+    public void PlaySFX(int index)
+    {
+        if(playSFX && index < sfx.Length)
+        {
+            sfx[index].Stop();
+            sfx[index].Play();
+        }
     }
 
     AudioClip RandomClip(AudioClip[] clips)

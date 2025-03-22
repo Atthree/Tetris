@@ -77,7 +77,12 @@ public class GameManager : MonoBehaviour
             inputCounter = Time.time + inputTimer;
             if (!boardManager.CurrentPosition(activeShape))
             {
+                SoundManager.Instance.PlaySFX(1);
                 activeShape.MoveLeft();
+            }
+            else
+            {
+                SoundManager.Instance.PlaySFX(2);
             }
         }
         else if ((Input.GetKey("left") && Time.time > inputCounter) || Input.GetKeyDown("left"))
@@ -86,7 +91,12 @@ public class GameManager : MonoBehaviour
             inputCounter = Time.time + inputTimer;
             if (!boardManager.CurrentPosition(activeShape))
             {
+                SoundManager.Instance.PlaySFX(1);
                 activeShape.MoveRight();
+            }
+            else
+            {
+                SoundManager.Instance.PlaySFX(2);
             }
         }
         else if (Input.GetKeyDown("up") && Time.time > inputTurnCounter)
@@ -95,10 +105,15 @@ public class GameManager : MonoBehaviour
             inputTurnCounter = Time.time + inputTurnTimer;
             if (!boardManager.CurrentPosition(activeShape))
             {
+                SoundManager.Instance.PlaySFX(1);
                 activeShape.TurnLeft();
             }
+            else
+            {
+                SoundManager.Instance.PlaySFX(2);
+            }
         }
-        else if (Input.GetKey("down") && Time.time > inputDownCounter)
+        else if (Input.GetKey("down") && Time.time > inputDownCounter) // burada bir şey eksik
         {
             moveCounter = Time.time + moveTime;
             inputDownCounter = Time.time + inputDownTimer;
@@ -121,6 +136,7 @@ public class GameManager : MonoBehaviour
             // Oyun sonu kontrolü
             if (activeShape != null && boardManager.SpillOut(activeShape))
             {
+                SoundManager.Instance.PlaySFX(5);
                 gameOver = true;
                 Debug.Log("GameManager: Şekil tahtayı aştı, oyun bitti!");
             }
