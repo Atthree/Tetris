@@ -8,6 +8,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip[] musicClip;
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource[] sfx;
+    [SerializeField] private AudioSource[] vocalClips;
     public bool playMusic = true;
     public bool playSFX = true;
 
@@ -22,9 +23,20 @@ public class SoundManager : MonoBehaviour
         randomMusicClip = RandomClip(musicClip);
         BackgroundMusic(randomMusicClip);
     }
+    public void VocalSounds()
+    {
+        if (playSFX)
+        {
+            AudioSource source = vocalClips[Random.Range(0, vocalClips.Length)];
+
+            source.Stop();
+            source.Play();
+
+        }
+    }
     public void PlaySFX(int index)
     {
-        if(playSFX && index < sfx.Length)
+        if (playSFX && index < sfx.Length)
         {
             sfx[index].Stop();
             sfx[index].Play();
@@ -48,9 +60,9 @@ public class SoundManager : MonoBehaviour
     }
     void UpdateMusic()
     {
-        if(musicSource.isPlaying != playMusic)
+        if (musicSource.isPlaying != playMusic)
         {
-            if(playMusic)
+            if (playMusic)
             {
                 randomMusicClip = RandomClip(musicClip);
                 BackgroundMusic(randomMusicClip);
@@ -66,5 +78,9 @@ public class SoundManager : MonoBehaviour
     {
         playMusic = !playMusic;
         UpdateMusic();
+    }
+    public void OnOffFX()
+    {
+        playSFX = !playSFX;
     }
 }

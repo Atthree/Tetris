@@ -10,6 +10,7 @@ public class BoardManager : MonoBehaviour
     [SerializeField] public int width = 10;
 
     private Transform[,] grid;
+    public int complatedLine = 0;
 
     private void Awake()
     {
@@ -139,10 +140,12 @@ public class BoardManager : MonoBehaviour
 
     public void ClearAllLines()
     {
+        complatedLine = 0;
         for (int y = 0; y < height; y++)
         {
             if (LineCompleted(y))
             {
+                complatedLine++;
                 ClearLine(y);
                 DownAllLines(y + 1);
                 y--; // Aynı satırı tekrar kontrol et

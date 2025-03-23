@@ -132,11 +132,20 @@ public class GameManager : MonoBehaviour
         {
             activeShape.MoveUp();
             boardManager.PutShapeInGrid(activeShape);
-            boardManager.ClearAllLines();
-
-            if(spawnerManager)
+            SoundManager.Instance.PlaySFX(4);
+            if (spawnerManager)
             {
                 SpawnNewShape();
+            }
+            boardManager.ClearAllLines();
+            
+            if(boardManager.complatedLine > 0)
+            {                
+                if(boardManager.complatedLine > 1)
+                {
+                    SoundManager.Instance.VocalSounds();
+                }
+                SoundManager.Instance.PlaySFX(3);
             }
 
             if (activeShape != null)
