@@ -41,4 +41,16 @@ public class ShapeManager : MonoBehaviour
             transform.Rotate(0,0,90);
         }
     }
+
+    public void CanTurnRight(bool rightDir)
+    {
+        if (rightDir)
+        {
+            TurnRight();
+        }
+        else
+        {
+            TurnLeft();
+        }
+    }
 }

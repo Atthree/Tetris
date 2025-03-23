@@ -23,7 +23,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float inputDownTimer = 0.25f;
     private float inputDownCounter;
 
-    private bool gameOver = false;
+    public IconOpenClose rotateIcon;
+    [SerializeField] private GameObject gameOverPanel;
+    public bool rightDirec = true;
+    public bool gameOver = false;
 
     private void Start()
     {
@@ -44,6 +47,10 @@ public class GameManager : MonoBehaviour
         if (spawnerManager != null && activeShape == null)
         {
             SpawnNewShape();
+        }
+        if (gameOverPanel)
+        {
+            gameOverPanel.SetActive(false);
         }
 
         spawnSayac = Time.time + spawnSuresi;
@@ -108,12 +115,17 @@ public class GameManager : MonoBehaviour
             inputTurnCounter = Time.time + inputTurnTimer;
             if (!boardManager.CurrentPosition(activeShape))
             {
-                SoundManager.Instance.PlaySFX(1);
+                SoundManager.Instance.PlaySFX(0);
                 activeShape.TurnLeft();
             }
             else
             {
-                SoundManager.Instance.PlaySFX(2);
+                rightDirec = !rightDirec;
+                SoundManager.Instance.PlaySFX(0);
+                if(rotateIcon)
+                {
+                    rotateIcon.CurrentIcon(rightDirec);
+                }
             }
         }
         else if (Input.GetKey("down") && Time.time > inputDownCounter) 
@@ -159,6 +171,11 @@ public class GameManager : MonoBehaviour
                         Debug.Log("Game Over");
                         SoundManager.Instance.PlaySFX(5);
                         gameOver = true;
+                        if (gameOverPanel)
+                        {
+                            gameOverPanel.SetActive(true);
+                            SoundManager.Instance.PlaySFX(5);
+                        }
                         Debug.Log("GameManager: Şekil tahtayı aştı, oyun bitti!");
                     }
                 }
@@ -194,4 +211,26 @@ public class GameManager : MonoBehaviour
     {
         return new Vector2(Mathf.Round(vector.x), Mathf.Round(vector.y));
     }
+
+    public void RotationIcon()
+    {
+        rightDirec = !rightDirec;
+
+        activeShape.CanTurnRight(rightDirec);
+
+        if(!boardManager.CurrentPosition(activeShape))
+        {
+            activeShape.CanTurnRight(!rightDirec);
+            SoundManager.Instance.PlaySFX(0);
+        }
+        else
+        {
+            if(rotateIcon)
+            {
+                rotateIcon.CurrentIcon(rightDirec);
+            }
+            SoundManager.Instance.PlaySFX(0);
+        }
+    }
+
 }

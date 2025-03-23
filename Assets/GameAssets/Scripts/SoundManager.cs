@@ -12,6 +12,8 @@ public class SoundManager : MonoBehaviour
     public bool playMusic = true;
     public bool playSFX = true;
 
+    public IconOpenClose sfxIcon , musicIcon;
+
     private AudioClip randomMusicClip;
 
     private void Awake()
@@ -78,9 +80,11 @@ public class SoundManager : MonoBehaviour
     {
         playMusic = !playMusic;
         UpdateMusic();
+        musicIcon.CurrentIcon(playMusic);
     }
     public void OnOffFX()
     {
         playSFX = !playSFX;
+        sfxIcon.CurrentIcon(playSFX);
     }
 }
