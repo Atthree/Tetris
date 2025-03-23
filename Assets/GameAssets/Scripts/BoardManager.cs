@@ -6,7 +6,7 @@ public class BoardManager : MonoBehaviour
 {
     [Header("Board Settings")]
     [SerializeField] private Transform tilePrefab;
-    [SerializeField] public int height = 22; // Public ancak SerializeField ile Inspector'dan düzenlenebilir
+    [SerializeField] public int height = 22;
     [SerializeField] public int width = 10;
 
     private Transform[,] grid;
@@ -23,7 +23,7 @@ public class BoardManager : MonoBehaviour
 
     private bool IsWithinBoard(int x, int y)
     {
-        Debug.Log("içerisinde degil");
+
         return x >= 0 && x < width && y >= 0; 
     }
 

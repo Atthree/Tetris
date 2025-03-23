@@ -4,8 +4,8 @@ public class GameManager : MonoBehaviour
 {
     [Header("Counters")]
     [Range(0.01f, 1f)]
-    [SerializeField] private float moveTime = 0.5f;
-    private float moveCounter;
+    [SerializeField] private float spawnSuresi = 0.5f;
+    private float spawnSayac;
 
     [Header("Managers")]
     [SerializeField] private BoardManager boardManager;
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
             SpawnNewShape();
         }
 
-        moveCounter = Time.time + moveTime;
+        spawnSayac = Time.time + spawnSuresi;
         inputCounter = Time.time;
         inputTurnCounter = Time.time;
         inputDownCounter = Time.time;
@@ -62,10 +62,13 @@ public class GameManager : MonoBehaviour
 
         Control();
 
-        if (Time.time >= moveCounter)
+        if (Time.time > spawnSayac)
         {
-            moveCounter = Time.time + moveTime;
-            Settled();
+            spawnSayac = Time.time + spawnSuresi;
+            if(activeShape)
+            {
+                Settled();
+            }
         }
     }
 
@@ -113,9 +116,9 @@ public class GameManager : MonoBehaviour
                 SoundManager.Instance.PlaySFX(2);
             }
         }
-        else if (Input.GetKey("down") && Time.time > inputDownCounter) // burada bir şey eksik
+        else if (Input.GetKey("down") && Time.time > inputDownCounter) 
         {
-            moveCounter = Time.time + moveTime;
+            spawnSayac = Time.time + spawnSuresi;
             inputDownCounter = Time.time + inputDownTimer;
             Settled();
         }
@@ -131,14 +134,29 @@ public class GameManager : MonoBehaviour
             boardManager.PutShapeInGrid(activeShape);
             boardManager.ClearAllLines();
 
-            SpawnNewShape();
-
-            // Oyun sonu kontrolü
-            if (activeShape != null && boardManager.SpillOut(activeShape))
+            if(spawnerManager)
             {
-                SoundManager.Instance.PlaySFX(5);
-                gameOver = true;
-                Debug.Log("GameManager: Şekil tahtayı aştı, oyun bitti!");
+                SpawnNewShape();
+            }
+
+            if (activeShape != null)
+            {                
+                activeShape.MoveDown();
+                if (!boardManager.CurrentPosition(activeShape))
+                {
+                    activeShape.MoveUp();
+                    if (boardManager.SpillOut(activeShape))
+                    {
+                        Debug.Log("Game Over");
+                        SoundManager.Instance.PlaySFX(5);
+                        gameOver = true;
+                        Debug.Log("GameManager: Şekil tahtayı aştı, oyun bitti!");
+                    }
+                }
+                else
+                {
+                    activeShape.MoveUp(); 
+                }
             }
         }
     }
@@ -148,12 +166,10 @@ public class GameManager : MonoBehaviour
         activeShape = spawnerManager.CreateShape();
         if (activeShape != null)
         {
-            // Tahtanın üstünden biraz aşağıda spawn et
-            Vector2 spawnPos = new Vector2(boardManager.width / 2f, boardManager.height - 2);
+            Vector2 spawnPos = new Vector2(boardManager.width / 2f, boardManager.height - 1);
             activeShape.transform.position = RoundToInt(spawnPos);
             Debug.Log("GameManager: Yeni şekil spawn edildi: " + activeShape.name + " at " + activeShape.transform.position);
 
-            // Şeklin pozisyonu başlangıçta geçersizse uyarı ver ama oyun bitmesin
             if (!boardManager.CurrentPosition(activeShape))
             {
                 Debug.LogWarning("GameManager: Yeni şekil tahtada geçersiz bir pozisyonda spawn edildi!");
