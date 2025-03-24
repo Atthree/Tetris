@@ -5,7 +5,7 @@ public class ShapeManager : MonoBehaviour
 {
     [SerializeField] private bool canRotate = true;
 
-    
+    public Sprite shape;
     public void MoveLeft()
     {
         transform.Translate(Vector3.left,Space.World);

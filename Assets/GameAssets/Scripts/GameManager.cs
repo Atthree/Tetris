@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     [Header("Counters")]
     [Range(0.01f, 1f)]
-    [SerializeField] private float spawnSuresi = 0.5f; // Şeklin otomatik düşme aralığı (daha büyük değer = daha yavaş düşme)
+    [SerializeField] private float spawnSuresi = 0.5f; 
     private float spawnSayac;
     private float spawnLevelCounter;
 
@@ -14,6 +15,8 @@ public class GameManager : MonoBehaviour
     private ShapeManager activeShape;
     private ScoreManager scoreManager;
     public IconOpenClose rotateIcon;
+    private FollowShapeManager followShape;
+    private ShapeManager eldekiSekil;
 
     [Header("Input Timers")]
     [Range(0.02f, 1f)]
@@ -23,12 +26,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float inputTurnTimer = 0.25f;
     private float inputTurnCounter;
     [Range(0.02f, 1f)]
-    [SerializeField] private float inputDownTimer = 0.25f; // Manuel aşağı hareket aralığı
+    [SerializeField] private float inputDownTimer = 0.25f;
     private float inputDownCounter;
 
     [SerializeField] private GameObject gameOverPanel;
     public bool rightDirec = true;
     public bool gameOver = false;
+    public Image eldekiSekilImg;
 
     private void Start()
     {
@@ -51,10 +55,22 @@ public class GameManager : MonoBehaviour
             if (scoreManager == null) Debug.LogError("GameManager: ScoreManager bulunamadı!");
             else Debug.Log("GameManager: ScoreManager bulundu!");
         }
+        if (followShape == null)
+        {
+            followShape = Object.FindFirstObjectByType<FollowShapeManager>();
+            if (followShape == null) Debug.LogError("GameManager: followShape bulunamadı!");
+            else Debug.Log("GameManager: FollowShape bulundu!");
+        }
 
         if (spawnerManager != null && activeShape == null)
         {
             SpawnNewShape();
+        }
+        if(spawnerManager && eldekiSekil == null)
+        {
+            eldekiSekil = spawnerManager.CreateOtherShape();
+            eldekiSekilImg.sprite = eldekiSekil.shape;
+            eldekiSekil.gameObject.SetActive(false);
         }
         if (gameOverPanel)
         {
@@ -78,6 +94,13 @@ public class GameManager : MonoBehaviour
         }
 
         Control();
+    }
+    private void LateUpdate()
+    {
+        if (followShape)
+        {
+            followShape.CreateFollowShape(activeShape, boardManager);
+        }
     }
 
     private void Control()
@@ -155,7 +178,16 @@ public class GameManager : MonoBehaviour
             if (spawnerManager)
             {
                 SpawnNewShape();
+                eldekiSekil = spawnerManager.CreateOtherShape();
+                eldekiSekilImg.sprite = eldekiSekil.shape;
+                eldekiSekil.gameObject.SetActive(false);
             }
+
+            if (followShape)
+            {
+                followShape.ResetFc();
+            }
+
             boardManager.ClearAllLines();
 
             if (boardManager.complatedLine > 0)

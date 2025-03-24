@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canRotate: 0
+  shape: {fileID: 21300000, guid: cd1e3ad1f4476aa48b3f0bfeae2d9cba, type: 3}
 --- !u!1 &4971558534537603155
 GameObject:
   m_ObjectHideFlags: 0
