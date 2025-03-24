@@ -1260,6 +1260,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 329541158}
   m_CullTransparentMesh: 1
+--- !u!1 &341427775
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 341427776}
+  - component: {fileID: 341427777}
+  m_Layer: 0
+  m_Name: ScoreManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &341427776
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341427775}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1906523335}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &341427777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341427775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7c0fdabc80cf4141ad3094ad94a4181, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  level: 1
+  numberOfLevel: 5
+  lineTxt: {fileID: 64332428}
+  levelTxt: {fileID: 637943716}
+  scoreTxt: {fileID: 888847078}
+  isLevelPassed: 0
 --- !u!1 &356517428
 GameObject:
   m_ObjectHideFlags: 0
@@ -2854,7 +2904,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &830420111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3333,7 +3383,7 @@ MonoBehaviour:
   spawnerManager: {fileID: 0}
   inputTimer: 0.1
   inputTurnTimer: 0.1
-  inputDownTimer: 0.1
+  inputDownTimer: 0.02
   rotateIcon: {fileID: 522978723}
   gameOverPanel: {fileID: 583242024}
   rightDirec: 1
@@ -4129,8 +4179,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingAlpha: 1
   endAlpha: 0
-  waitTime: 0
-  fadeTime: 0
+  waitTime: 0.7
+  fadeTime: 0.3
 --- !u!225 &1193500881
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6217,6 +6267,7 @@ Transform:
   - {fileID: 950149942}
   - {fileID: 9864422}
   - {fileID: 1560607291}
+  - {fileID: 341427776}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2024713139
@@ -6388,6 +6439,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2027452035}
   m_CullTransparentMesh: 1
+--- !u!1 &2030665437
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2030665439}
+  - component: {fileID: 2030665438}
+  m_Layer: 0
+  m_Name: Test
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2030665438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030665437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f562050564e7ff42856664a2ae547e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allShapes:
+  - {fileID: 2308628752082251449, guid: b7becf09b4e7d58489d8a0914593ff65, type: 3}
+--- !u!4 &2030665439
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030665437}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4, y: 23, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2064199821
 GameObject:
   m_ObjectHideFlags: 0
@@ -6603,4 +6700,5 @@ SceneRoots:
   - {fileID: 1571737906}
   - {fileID: 1071892548}
   - {fileID: 830420112}
+  - {fileID: 2030665439}
   - {fileID: 1906523335}

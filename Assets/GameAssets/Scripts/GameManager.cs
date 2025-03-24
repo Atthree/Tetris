@@ -4,13 +4,16 @@ public class GameManager : MonoBehaviour
 {
     [Header("Counters")]
     [Range(0.01f, 1f)]
-    [SerializeField] private float spawnSuresi = 0.5f;
+    [SerializeField] private float spawnSuresi = 0.5f; // Şeklin otomatik düşme aralığı (daha büyük değer = daha yavaş düşme)
     private float spawnSayac;
+    private float spawnLevelCounter;
 
     [Header("Managers")]
     [SerializeField] private BoardManager boardManager;
     [SerializeField] private SpawnerManager spawnerManager;
     private ShapeManager activeShape;
+    private ScoreManager scoreManager;
+    public IconOpenClose rotateIcon;
 
     [Header("Input Timers")]
     [Range(0.02f, 1f)]
@@ -20,10 +23,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float inputTurnTimer = 0.25f;
     private float inputTurnCounter;
     [Range(0.02f, 1f)]
-    [SerializeField] private float inputDownTimer = 0.25f;
+    [SerializeField] private float inputDownTimer = 0.25f; // Manuel aşağı hareket aralığı
     private float inputDownCounter;
 
-    public IconOpenClose rotateIcon;
     [SerializeField] private GameObject gameOverPanel;
     public bool rightDirec = true;
     public bool gameOver = false;
@@ -43,6 +45,12 @@ public class GameManager : MonoBehaviour
             if (spawnerManager == null) Debug.LogError("GameManager: SpawnerManager bulunamadı!");
             else Debug.Log("GameManager: SpawnerManager bulundu!");
         }
+        if (scoreManager == null)
+        {
+            scoreManager = Object.FindFirstObjectByType<ScoreManager>();
+            if (scoreManager == null) Debug.LogError("GameManager: ScoreManager bulunamadı!");
+            else Debug.Log("GameManager: ScoreManager bulundu!");
+        }
 
         if (spawnerManager != null && activeShape == null)
         {
@@ -53,6 +61,8 @@ public class GameManager : MonoBehaviour
             gameOverPanel.SetActive(false);
         }
 
+        // Başlangıç değerlerini ayarla
+        spawnLevelCounter = spawnSuresi; // Otomatik düşme hızı başlangıçta spawnSuresi ile aynı olsun
         spawnSayac = Time.time + spawnSuresi;
         inputCounter = Time.time;
         inputTurnCounter = Time.time;
@@ -61,22 +71,13 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (!boardManager || !spawnerManager || !activeShape || gameOver)
+        if (!boardManager || !spawnerManager || !activeShape || gameOver || !scoreManager)
         {
             if (gameOver) Debug.Log("GameManager: Oyun bitti!");
             return;
         }
 
         Control();
-
-        if (Time.time > spawnSayac)
-        {
-            spawnSayac = Time.time + spawnSuresi;
-            if(activeShape)
-            {
-                Settled();
-            }
-        }
     }
 
     private void Control()
@@ -122,16 +123,22 @@ public class GameManager : MonoBehaviour
             {
                 rightDirec = !rightDirec;
                 SoundManager.Instance.PlaySFX(0);
-                if(rotateIcon)
+                if (rotateIcon)
                 {
                     rotateIcon.CurrentIcon(rightDirec);
                 }
             }
         }
-        else if (Input.GetKey("down") && Time.time > inputDownCounter) 
+        // Düzenleme: Manuel aşağı hareket ve otomatik düşme ayrıldı
+        else if (Input.GetKey("down") && Time.time > inputDownCounter)
         {
-            spawnSayac = Time.time + spawnSuresi;
-            inputDownCounter = Time.time + inputDownTimer;
+            inputDownCounter = Time.time + inputDownTimer; // Manuel hızlandırma için ayrı zamanlayıcı
+            Settled();
+        }
+        // Düzenleme: Otomatik düşme için ayrı kontrol
+        else if (Time.time > spawnSayac)
+        {
+            spawnSayac = Time.time + spawnLevelCounter; // Otomatik düşme hızı spawnLevelCounter ile kontrol edilir
             Settled();
         }
     }
@@ -150,18 +157,30 @@ public class GameManager : MonoBehaviour
                 SpawnNewShape();
             }
             boardManager.ClearAllLines();
-            
-            if(boardManager.complatedLine > 0)
-            {                
-                if(boardManager.complatedLine > 1)
+
+            if (boardManager.complatedLine > 0)
+            {
+                scoreManager.LineScore(boardManager.complatedLine);
+                if (scoreManager.isLevelPassed)
                 {
-                    SoundManager.Instance.VocalSounds();
+                    SoundManager.Instance.PlaySFX(6);
+                    // Düzenleme: Seviye ilerledikçe düşme hızını daha dengeli artır
+                    // Açık lama: spawnLevelCounter, spawnSuresi'nden küçük bir miktar azaltılarak hız artırılır
+                    spawnLevelCounter = Mathf.Max(spawnSuresi - ((int)scoreManager.level - 1) * 0.05f, 0.05f);
+                    Debug.Log("New spawnLevelCounter: " + spawnLevelCounter);
+                }
+                else
+                {
+                    if (boardManager.complatedLine > 1)
+                    {
+                        SoundManager.Instance.VocalSounds();
+                    }
                 }
                 SoundManager.Instance.PlaySFX(3);
             }
 
             if (activeShape != null)
-            {                
+            {
                 activeShape.MoveDown();
                 if (!boardManager.CurrentPosition(activeShape))
                 {
@@ -181,7 +200,7 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    activeShape.MoveUp(); 
+                    activeShape.MoveUp();
                 }
             }
         }
@@ -218,19 +237,18 @@ public class GameManager : MonoBehaviour
 
         activeShape.CanTurnRight(rightDirec);
 
-        if(!boardManager.CurrentPosition(activeShape))
+        if (!boardManager.CurrentPosition(activeShape))
         {
             activeShape.CanTurnRight(!rightDirec);
             SoundManager.Instance.PlaySFX(0);
         }
         else
         {
-            if(rotateIcon)
+            if (rotateIcon)
             {
                 rotateIcon.CurrentIcon(rightDirec);
             }
             SoundManager.Instance.PlaySFX(0);
         }
     }
-
 }
