@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     public bool rightDirec = true;
     public bool gameOver = false;
     public Image eldekiSekilImg;
+    private bool isChange = true;
 
     private void Start()
     {
@@ -69,8 +70,20 @@ public class GameManager : MonoBehaviour
         if(spawnerManager && eldekiSekil == null)
         {
             eldekiSekil = spawnerManager.CreateOtherShape();
-            eldekiSekilImg.sprite = eldekiSekil.shape;
-            eldekiSekil.gameObject.SetActive(false);
+
+            if (eldekiSekil.name == activeShape.name)
+            {
+                Destroy(eldekiSekil.gameObject);
+                eldekiSekil = spawnerManager.CreateOtherShape();
+
+                eldekiSekilImg.sprite = eldekiSekil.shape;
+                eldekiSekil.gameObject.SetActive(false);
+            }  
+            else
+            {
+                eldekiSekilImg.sprite = eldekiSekil.shape;
+                eldekiSekil.gameObject.SetActive(false);
+            }
         }
         if (gameOverPanel)
         {
@@ -175,12 +188,28 @@ public class GameManager : MonoBehaviour
             activeShape.MoveUp();
             boardManager.PutShapeInGrid(activeShape);
             SoundManager.Instance.PlaySFX(4);
+
+           isChange = true;
+
             if (spawnerManager)
             {
                 SpawnNewShape();
+
                 eldekiSekil = spawnerManager.CreateOtherShape();
-                eldekiSekilImg.sprite = eldekiSekil.shape;
-                eldekiSekil.gameObject.SetActive(false);
+
+                if (eldekiSekil.name == activeShape.name)
+                {
+                    Destroy(eldekiSekil.gameObject);
+                    eldekiSekil = spawnerManager.CreateOtherShape();
+
+                    eldekiSekilImg.sprite = eldekiSekil.shape;
+                    eldekiSekil.gameObject.SetActive(false);
+                }
+                else
+                {
+                    eldekiSekilImg.sprite = eldekiSekil.shape;
+                    eldekiSekil.gameObject.SetActive(false);
+                }
             }
 
             if (followShape)
@@ -282,5 +311,24 @@ public class GameManager : MonoBehaviour
             }
             SoundManager.Instance.PlaySFX(0);
         }
+    }
+
+    public void ChangeHandleShape()
+    {
+        if (isChange)
+        {
+            isChange = false;
+            activeShape.gameObject.SetActive(false);
+            eldekiSekil.gameObject.SetActive(true);
+
+            eldekiSekil.transform.position = activeShape.transform.position;
+
+            activeShape = eldekiSekil;
+        }
+        if (followShape)
+        {
+            followShape.ResetFc();
+        }
+
     }
 }
