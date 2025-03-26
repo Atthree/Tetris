@@ -40,6 +40,7 @@ public class SoundManager : MonoBehaviour
     {
         if (playSFX && index < sfx.Length)
         {
+            sfx[index].volume = PlayerPrefs.GetFloat("FxVolume");
             sfx[index].Stop();
             sfx[index].Play();
         }
@@ -57,6 +58,7 @@ public class SoundManager : MonoBehaviour
         {
             return;
         }
+        musicSource.volume = PlayerPrefs.GetFloat("musicVolume");
         musicSource.clip = musicClip;
         musicSource.Play();
     }

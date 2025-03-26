@@ -1,10 +1,12 @@
 fileFormatVersion: 2
-guid: ab24fbd07343834429fbeefe893ba0f8
+guid: 198a50521882c134492b1dc6b191db42
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6988806900209206641
-    second: BoardBack_0
+      213: 2232971786745784880
+    second: "DALL\xB7E 2025-03-26 12.32.45 - A colorful Tetris game icon featuring
+      stacked tetromino blocks in various bright colors (blue, red, yellow, green,
+      and purple) against a dark gradient_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +128,15 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BoardBack_0
+      name: "DALL\xB7E 2025-03-26 12.32.45 - A colorful Tetris game icon featuring
+        stacked tetromino blocks in various bright colors (blue, red, yellow, green,
+        and purple) against a dark gradient_0"
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 800
-        height: 1528
+        width: 1024
+        height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +145,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 175c4c2f8da3df060800000000000000
-      internalID: 6988806900209206641
+      spriteID: 03aa37e520c1dfe10800000000000000
+      internalID: 2232971786745784880
       vertices: []
       indices: 
       edges: []
@@ -161,7 +165,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      BoardBack_0: 6988806900209206641
+      "DALL\xB7E 2025-03-26 12.32.45 - A colorful Tetris game icon featuring stacked tetromino blocks in various bright colors (blue, red, yellow, green, and purple) against a dark gradient_0": 2232971786745784880
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

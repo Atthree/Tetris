@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      bloklar_0: -3912075854188889082
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
